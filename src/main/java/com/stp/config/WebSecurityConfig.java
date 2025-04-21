@@ -44,19 +44,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	@Bean
-	public JwtAuthenticationFilter authenticationTokenFilterBean() throws Exception {
+	public JwtAuthenticationFilter authenticationTokenFilterBean() {
 		return new JwtAuthenticationFilter();
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.cors().and().csrf().disable().authorizeRequests().antMatchers("/token/*", "/JWTUser/*", "/swagger-ui/*")
+		http.cors().and().csrf().disable().authorizeRequests()
+				.antMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/webjars/**", "/token/*",
+						"/JWTUser/*")
 				.permitAll().anyRequest().authenticated().and().exceptionHandling()
 				.authenticationEntryPoint(unauthorizedHandler).and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
 		http.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
-		// security
-		http.headers().xssProtection().and().contentSecurityPolicy("default-src 'self'").and().frameOptions().deny();
 	}
 
 	@Bean

@@ -1,6 +1,7 @@
 package com.stp.auth;
 
-import java.io.IOException;
+import static com.stp.utility.GenericCLass.STATUS_FAILED;
+import static com.stp.utility.GenericCLass.STATUS_SUCCESS;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -9,16 +10,12 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.stp.model.db1.STP_Login;
+import com.stp.model.db1.StpLogin;
 import com.stp.service.LoginServ;
 import com.stp.service.RegistrationServ;
 import com.stp.utility.ResponseBean;
@@ -28,52 +25,55 @@ import com.stp.utility.ResponseBean;
 public class AuthenticationController implements CORSInterface {
 	private static final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
 
-	@Autowired
-	private AuthenticationManager authenticationManager;
+	private final JwtTokenUtil jwtTokenUtil;
+
+	private final RegistrationServ registrationServ;
+
+	private final LoginServ service;
 
 	@Autowired
-	private JwtTokenUtil jwtTokenUtil;
+	public AuthenticationController(JwtTokenUtil jwtTokenUtil, RegistrationServ registrationServ, LoginServ service) {
+		super();
+		this.jwtTokenUtil = jwtTokenUtil;
+		this.registrationServ = registrationServ;
+		this.service = service;
+	}
 
-	@Autowired
-	private RegistrationServ registrationServ;
-
-	@Autowired
-	private BCryptPasswordEncoder bcryptEncoder;
-
-	@Autowired
-	private LoginServ service;
-
-//login
-	@RequestMapping(value = "/generate-tokenApi", method = RequestMethod.POST)
-	public String generateTokenApi(@RequestParam(required = false) String emplycd)
-			throws AuthenticationException, IOException {
-		JSONObject res = null;
+	// login
+	@PostMapping("/generate-tokenApi")
+	public String generateTokenApi(@RequestParam(required = false) String emplycd) {
+		JSONObject res = new JSONObject(); // Initialize at start to avoid null
 		try {
-			STP_Login fetchAccessList = registrationServ.fetchAccessList(Integer.parseInt(emplycd));
+			StpLogin fetchAccessList = registrationServ.fetchAccessList(Integer.parseInt(emplycd));
 			final String token = jwtTokenUtil.generateToken(fetchAccessList);
-			res = new JSONObject();
-			res.put("token", token);
+			if (token != null && !token.isEmpty()) {
+				res.put("token", token);
+			} else {
+				res.put("token", "NA"); // Proper key usage
+			}
 		} catch (JSONException e) {
-			e.printStackTrace();
+			res.put("error", "Token generation failed");
+		} catch (NumberFormatException e) {
+			res.put("error", "Invalid employee code format");
 		}
 		return res.toString();
 	}
 
 	@PostMapping(value = "/generate-token")
-	public ResponseBean fetchAccess(@RequestParam(required = false) String emplycd, HttpServletRequest request)
-			throws AuthenticationException, IOException {
+	public ResponseBean fetchAccess(@RequestParam(required = false) String emplycd, HttpServletRequest request) {
 		ResponseBean bean = new ResponseBean();
 		try {
-			STP_Login fetchAccessList = registrationServ.fetchAccessList(Integer.parseInt(emplycd));
+			StpLogin fetchAccessList = registrationServ.fetchAccessList(Integer.parseInt(emplycd));
 			if (fetchAccessList == null) {
-				bean.setStatus("FAILED");
+				bean.setStatus(STATUS_FAILED);
 				bean.setMessage("Application access entry not found.");
 				return bean;
 			}
 			// Check if the status is Active ('A')
 			if ("A".equalsIgnoreCase(fetchAccessList.getStatus())) {
 				boolean checkAlreadyLogin = service.checkAlreadyLogin(fetchAccessList.getEmplycd());
-				System.out.println("checkAlreadyLogin" + checkAlreadyLogin);
+				logger.info("checkAlreadyLogin : {}", checkAlreadyLogin);
+
 				if (checkAlreadyLogin) {
 					bean.setData(fetchAccessList);
 					bean.setStatus("ALREADY");
@@ -82,19 +82,20 @@ public class AuthenticationController implements CORSInterface {
 					final String token = jwtTokenUtil.generateToken(fetchAccessList);
 					service.addHistory(request, fetchAccessList.getEmplycd());
 					bean.setData(fetchAccessList);
-					bean.setStatus("SUCCESS");
+					bean.setStatus(STATUS_SUCCESS);
 					bean.setMessage(token);
 					request.getSession().setAttribute("LoginSession", fetchAccessList);
-					STP_Login access = (STP_Login) request.getSession().getAttribute("LoginSession");
-					System.out.println("access" + access.getEmplycd());
+					StpLogin access = (StpLogin) request.getSession().getAttribute("LoginSession");
+					logger.info("access : {}", access.getEmplycd());
+
 				}
 			} else {
-				bean.setStatus("FAILED");
+				bean.setStatus(STATUS_FAILED);
 				bean.setMessage("User does not have active access.");
 			}
 		} catch (Exception e) {
-			logger.error("Error in api_login  fetchAccess mapping ", e);
-			bean.setStatus("FAILED");
+			logger.error("Error in api_login  fetchAccess mapping", e);
+			bean.setStatus(STATUS_FAILED);
 			bean.setMessage("Error fetching access: " + e.getMessage());
 		}
 		return bean;
@@ -104,21 +105,22 @@ public class AuthenticationController implements CORSInterface {
 	public ResponseBean updateAccess(@RequestParam Integer emplycd, HttpServletRequest request) {
 		ResponseBean bean = new ResponseBean();
 		try {
-			STP_Login fetchAccessList = registrationServ.fetchAccessList(emplycd);
+			StpLogin fetchAccessList = registrationServ.fetchAccessList(emplycd);
 			if (fetchAccessList == null) {
-				bean.setStatus("FAILED");
+				bean.setStatus(STATUS_FAILED);
 				bean.setMessage("Application access entry not found.");
 				return bean;
 			}
 			service.updateHistory(emplycd);
 			bean.setData(fetchAccessList);
-			bean.setStatus("SUCCESS");
+			bean.setStatus(STATUS_SUCCESS);
 			bean.setMessage("Application access entry found and Updated.");
 		} catch (Exception e) {
 			logger.error("Error in api_login updateAccess mapping ", e);
-			bean.setStatus("FAILED");
+			bean.setStatus(STATUS_FAILED);
 			bean.setMessage("Error fetching access: " + e.getMessage());
 		}
 		return bean;
 	}
+
 }

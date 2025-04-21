@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface DashBoardService {
 
-	public List<Object[]> getDashBoard();
+	public List<Object[]> getDashBoardDynamic(String type);
 }

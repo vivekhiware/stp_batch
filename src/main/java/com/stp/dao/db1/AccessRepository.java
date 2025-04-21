@@ -7,13 +7,13 @@ import javax.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.stp.model.db1.STP_Access;
+import com.stp.model.db1.StpAccess;
 
 @Repository
 @Transactional
-public interface AccessRepository extends JpaRepository<STP_Access, Integer> {
+public interface AccessRepository extends JpaRepository<StpAccess, Integer> {
 
-	STP_Access findByAppname(String appname);
+	StpAccess findByAppname(String appname);
 
-	List<STP_Access> findByStatus(String status);
+	List<StpAccess> findByStatus(String status);
 }

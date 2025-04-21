@@ -2,18 +2,17 @@ package com.stp.service;
 
 import java.util.List;
 
-import com.stp.model.db1.STP_Access;
-import com.stp.model.db1.STP_Login;
+import com.stp.model.db1.StpLogin;
 
 public interface RegistrationServ {
-	public STP_Login addAccessDetail(STP_Login access);
+	public StpLogin addAccessDetail(StpLogin access);
 
-	public STP_Login fetchAccessList(Integer emplycd);
+	public StpLogin fetchAccessList(Integer emplycd);
 
-	public STP_Login updateAccess(STP_Login access);
+	public StpLogin updateAccess(StpLogin access);
 
-	public List<STP_Login> fetchAccessListAll();
+	public List<StpLogin> fetchAccessListAll();
 
-	public STP_Login removeAccessDetail(Integer emplycd);
+	public StpLogin removeAccessDetail(Integer emplycd);
 
 }

@@ -1,16 +1,16 @@
 package com.stp;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 @Configuration
 public class AppConfig {
 
-	@Bean
-	@Qualifier("asyncExecutor") // Qualify the bean name to match the one injected in UPIController
+	@Bean(name = "asyncExecutor")
+	@Primary
 	public TaskExecutor asyncExecutor() {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setCorePoolSize(50); // Minimum number of threads

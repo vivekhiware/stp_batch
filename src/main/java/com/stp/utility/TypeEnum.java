@@ -2,10 +2,14 @@ package com.stp.utility;
 
 // Enum class definition
 public enum TypeEnum {
-	L1, L2, L3, L4, L5, L6, L7, L10, A1, TTUM4;
+	L0,L00,L1, L2, L3, L4, L5, L6, L7, L10, A1, TTUM4;
 
 	public String getDescription() {
 		switch (this) {
+		case L0:
+			return "Pending Maker";
+		case L00:
+			return "Pending Maker";
 		case L1:
 			return "Maker";
 		case L2:

@@ -1,5 +1,6 @@
 package com.stp.utility;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -9,6 +10,7 @@ public class ResponseBean {
 	private String message;
 	private Object data;
 
+	@Autowired
 	public ResponseBean() {
 		super();
 	}

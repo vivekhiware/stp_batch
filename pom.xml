@@ -9,16 +9,13 @@
 		<relativePath />
 		<!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.stp</groupId>
+	<groupId>com.stp</groupId> 
 	<artifactId>STP_PROCESS</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>STP PROCESS SYSTEM API</name>
 	<description>Demo project for Spring Boot</description>
-	<properties>
-		<java.version>1.8</java.version>
-		<!-- <spring.profiles.active>dev</spring.profiles.active> -->
-	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -81,28 +78,26 @@
 			<version>1.7.0</version>
 			<!-- Use 1.7.x version for Java 8 compatibility -->
 		</dependency>
-		<!--
-		https://mvnrepository.com/artifact/io.github.resilience4j/resilience4j-spring -->
+	
+
 		<dependency>
 			<groupId>io.github.resilience4j</groupId>
 			<artifactId>resilience4j-spring</artifactId>
 			<version>1.7.0</version>
 		</dependency>
-		<!-- Hibernate 2nd level cache (EHCache) -->
-		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-ehcache -->
+		
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-ehcache</artifactId>
 			<version>5.6.15.Final</version>
 		</dependency>
-		<!-- EHCache dependency -->
+
 		<dependency>
 			<groupId>org.ehcache</groupId>
 			<artifactId>ehcache</artifactId>
 			<version>3.9.7</version>
 		</dependency>
 
-		<!-- Spring Boot Starter for Validation -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
@@ -113,11 +108,10 @@
 			<version>20180813</version>
 		</dependency>
 
-		<!-- Apache HttpClient (for Java 8 and below) -->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>4.5.13</version> <!-- Choose the latest version available -->
+			<version>4.5.13</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -147,6 +141,18 @@
 			<artifactId>poi-ooxml</artifactId>
 			<version>5.2.4</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.sonarsource.scanner.maven</groupId>
+			<artifactId>sonar-maven-plugin</artifactId>
+			<version>5.1.0.4751</version>
+		</dependency>
+	<dependency>
+    <groupId>io.netty</groupId>
+    <artifactId>netty-all</artifactId>
+    <version>4.1.109.Final</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<finalName>STP-service</finalName>
@@ -158,7 +164,35 @@
 					<classifier>exec</classifier>
 				</configuration>
 			</plugin>
+			<plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.10</version>
+            <executions>
+                <execution>
+                    <id>prepare-agent</id>
+                    <goals>
+                        <goal>prepare-agent</goal>
+                    </goals>
+                </execution>
+                <execution>
+                    <id>report</id>
+                    <phase>verify</phase>
+                    <goals>
+                        <goal>report</goal>
+                    </goals>
+                    <configuration>
+                <outputDirectory>${project.build.directory}/site/jacoco</outputDirectory>
+                <formats>
+                    <format>HTML</format>
+                    <format>XML</format>
+                </formats>
+            </configuration>
+                </execution>
+            </executions>
+        </plugin>
 		</plugins>
+		
 	</build>
 
 </project>

@@ -1,5 +1,5 @@
 autoEnabled=true
 bindingSuggestionsDisabled=false
 eclipse.preferences.version=1
-fileExclusions=FILE\:pom.xml
+fileExclusions=FILE\:pom.xml\r\nFILE\:src/main/java/com/stp/dao/db1/NativeQueryRepository.java\r\nFILE\:src/main/java/com/iso/opt/IsoPackagerGlobal.java\r\nFILE\:src/main/java/com/stp/auth/JwtAuthenticationFilter.java
 indexingBasedOnEclipsePlugIns=true

@@ -2,61 +2,53 @@ package com.stp.utility;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
+import java.util.Arrays;
+import java.util.List;
 
-import org.springframework.stereotype.Component;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@Component
 public class GenericCLass {
+	private static final String DATE_FROMAT = "dd-MMM-yyyy";
+	public static final String STATUS_SUCCESS = "SUCCESS";
+	public static final String STATUS_FAILED = "FAILED";
+
+	private static final Logger logger = LoggerFactory.getLogger(GenericCLass.class);
 
 	public static final String HOST = "10.192.3.82"; // Remote host (e.g., ATM, POS)
 	public static final int PORT = 27000; // Port for the communication
 
-	public static void main(String[] args) {
-		GenericCLass test = new GenericCLass();
-//		  format req YYMMDDHHMMSS INPUT FROM  " 2025-02-12"
-//		 format req MMDD INPUT FROM  " 2025-02-12"
-//		format req YYMMDD INPUT FROM  " 2025-02-12"
-
-	}
-
-	public static Date convertStringToDate(String dateString) {
-		SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyyy"); // Define your date format
-		try {
-			return format.parse(dateString); // Convert the string to a Date object
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null; // Return null if parsing fails
-		}
-	}
-
-	public static LocalDate convertStringToLocalDate(String dateString) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy"); // Define your date format
-		try {
-			return LocalDate.parse(dateString, formatter); // Convert the string to a LocalDate object
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null; // Return null if parsing fails
-		}
+	private GenericCLass() {
+		throw new UnsupportedOperationException("Utility class — cannot be instantiated");
 	}
 
 	public static java.util.Date convertStringToSqlDate(String dateString) {
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy"); // Format like "20-Jun-2023"
+		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FROMAT); // Format like "20-Jun-2023"
 		try {
-			java.util.Date parsedDate = sdf.parse(dateString); // Convert to java.util.Date
-			return parsedDate; // Convert to java.sql.Date
+			return sdf.parse(dateString); // Convert to java.sql.Date
 		} catch (ParseException e) {
-			e.printStackTrace();
+			logger.error("Exception occurred: " + e.getMessage(), e);
 		}
 		return null; // Return null if parsing fails
 	}
 
-	public static ArrayList<String> notFailedTransaction() {
-		ArrayList<String> failedtxn = new ArrayList<String>();
+	public static String returnString(Object o) {
+		if (o == null) {
+			return "null";
+		} else if (o instanceof String) {
+			return (String) o;
+		} else if (o instanceof Integer) {
+			return String.valueOf(o);
+		} else if (o instanceof Double) {
+			return String.format("%.2f", o);
+		} else {
+			return o.toString();
+		}
+	}
+
+	public static List<String> notFailedTransaction() {
+		ArrayList<String> failedtxn = new ArrayList<>();
 		failedtxn.add("000");
 		failedtxn.add("NULL");
 		failedtxn.add("902");
@@ -83,8 +75,8 @@ public class GenericCLass {
 		return failedtxn;
 	}
 
-	public static ArrayList<String> creditTransaction() {
-		ArrayList<String> failedtxn = new ArrayList<String>();
+	public static List<String> creditTransaction() {
+		ArrayList<String> failedtxn = new ArrayList<>();
 		failedtxn.add("201");
 		failedtxn.add("202");
 		failedtxn.add("203");
@@ -96,8 +88,8 @@ public class GenericCLass {
 		return failedtxn;
 	}
 
-	public static ArrayList<String> debitTransaction() {
-		ArrayList<String> failedtxn = new ArrayList<String>();
+	public static List<String> debitTransaction() {
+		ArrayList<String> failedtxn = new ArrayList<>();
 
 		failedtxn.add("301");
 		failedtxn.add("302");
@@ -110,8 +102,8 @@ public class GenericCLass {
 		return failedtxn;
 	}
 
-	public static ArrayList<String> repostTransaction() {
-		ArrayList<String> failedtxn = new ArrayList<String>();
+	public static List<String> repostTransaction() {
+		ArrayList<String> failedtxn = new ArrayList<>();
 
 		failedtxn.add("902");
 		failedtxn.add("904");
@@ -122,4 +114,49 @@ public class GenericCLass {
 
 		return failedtxn;
 	}
+
+	public static List<String> getStatusList(String status) {
+		List<String> statuses = null;
+		if (status.equalsIgnoreCase("R")) {
+			statuses = Arrays.asList("R");
+		} else if (status.equalsIgnoreCase("L0") || status.equalsIgnoreCase("L00")) {
+			statuses = Arrays.asList("L0", "R0");
+		} else if (status.equalsIgnoreCase("L1")) {
+			statuses = Arrays.asList("L1", "R1");
+		} else if (status.equalsIgnoreCase("L2")) {
+			statuses = Arrays.asList("L2", "R2");
+		} else if (status.equalsIgnoreCase("L3")) {
+			statuses = Arrays.asList("L3", "R3");
+		} else if (status.equalsIgnoreCase("L4")) {
+			statuses = Arrays.asList("L4");
+		} else if (status.equalsIgnoreCase("L5")) {
+			statuses = Arrays.asList("L5");
+		} else if (status.equalsIgnoreCase("L6")) {
+			statuses = Arrays.asList("L6");
+		} else if (status.equalsIgnoreCase("L7")) {
+			statuses = Arrays.asList("L7");
+		} else if (status.equalsIgnoreCase("L8")) {
+			statuses = Arrays.asList("L8");
+		} else if (status.equalsIgnoreCase("L9")) {
+			statuses = Arrays.asList("L9");
+		} else if (status.equalsIgnoreCase("A1")) {
+			statuses = Arrays.asList("L10", "L5", "L6");
+		}
+		logger.info("statuses: {}", statuses);
+
+		return statuses;
+	}
+
+	public static ResponseBean createFailedResponse(String message, Exception e) {
+		if (e != null) {
+			logger.error("Error: {}", message, e);
+		} else {
+			logger.warn("Warning: {}", message);
+		}
+		ResponseBean bean = new ResponseBean();
+		bean.setStatus(STATUS_FAILED);
+		bean.setMessage(e != null ? message + ": " + e.getMessage() : message);
+		return bean;
+	}
+
 }

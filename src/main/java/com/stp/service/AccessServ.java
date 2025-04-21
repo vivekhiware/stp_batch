@@ -2,16 +2,16 @@ package com.stp.service;
 
 import java.util.List;
 
-import com.stp.model.db1.STP_Access;
+import com.stp.model.db1.StpAccess;
 
 public interface AccessServ {
 
-	public List<STP_Access> fetchAccessList();
+	public List<StpAccess> fetchAccessList();
 
-	public List<STP_Access> fetchAccessListAll();
+	public List<StpAccess> fetchAccessListAll();
 
-	public STP_Access addAccessDetail(STP_Access access);
+	public StpAccess addAccessDetail(StpAccess access);
 
-	public STP_Access removeAccessDetail(String appname);
+	public StpAccess removeAccessDetail(String appname);
 
 }

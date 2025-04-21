@@ -38,14 +38,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		res.setHeader("Pragma", "no-cache");
 		res.setHeader("X-XSS-Protection", "0");
 		res.setHeader("X-Content-Type-Options", "nosniff");
-		String header = req.getHeader(CONSTANT.HEADER_STRING);
+		String header = req.getHeader(Constants.HEADER_STRING);
 		String username = null;
 		String authToken = null;
-		if (header != null && header.startsWith(CONSTANT.TOKEN_PREFIX)) {
-			authToken = header.replace(CONSTANT.TOKEN_PREFIX, "");
+		if (header != null && header.startsWith(Constants.TOKEN_PREFIX)) {
+			authToken = header.replace(Constants.TOKEN_PREFIX, "");
 			try {
 				username = jwtTokenUtil.getUsernameFromToken(authToken);
-				System.out.println("username jwt " + username);
+
 			} catch (IllegalArgumentException e) {
 				logger.error("an error occured during getting username from token", e);
 				throw new DetailNotFoundException("an error occured during getting username from token" + e);
@@ -58,17 +58,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			}
 		} else {
 			logger.warn("couldn't find bearer string, will ignore the header");
-//			throw new DetailNotFoundException("couldn't find bearer string, will ignore the header");
 		}
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
 			UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+			Boolean validateToken = jwtTokenUtil.validateToken(authToken, userDetails);
+			boolean isValid = validateToken;
 
-			if (jwtTokenUtil.validateToken(authToken, userDetails)) {
+			if (isValid) {
 				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
 						userDetails, null, Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN")));
 				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
-				logger.info("authenticated user " + username + ", setting security context");
+				logger.warn("authenticated user " + username + ", setting security context");
 				SecurityContextHolder.getContext().setAuthentication(authentication);
 			}
 		}

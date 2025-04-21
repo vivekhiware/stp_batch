@@ -7,16 +7,16 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.stp.model.db1.STP_History;
+import com.stp.model.db1.StpHistory;
 
 @Repository
 @Transactional
-public interface HistoryRepository extends JpaRepository<STP_History, Integer> {
+public interface HistoryRepository extends JpaRepository<StpHistory, Integer> {
 
 	boolean existsByEmplycdAndOuttimeIsNull(int emplycd);
 
 	@Modifying
 	@Transactional
-	@Query("UPDATE STP_History h SET h.outtime =CURRENT_TIMESTAMP WHERE h.emplycd = :emplycd")
+	@Query("UPDATE StpHistory h SET h.outtime =CURRENT_TIMESTAMP WHERE h.emplycd = :emplycd")
 	int updateOutTimeByEmplycd(int emplycd);
 }

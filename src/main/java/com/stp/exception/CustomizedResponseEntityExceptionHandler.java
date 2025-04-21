@@ -1,10 +1,12 @@
 package com.stp.exception;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -48,9 +50,15 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
+
+		String firstError = Optional.ofNullable(ex.getFieldError()).map(FieldError::getDefaultMessage)
+				.orElse("Validation failed with no specific field error");
+
 		ErrorDetail errorDetail = new ErrorDetail(LocalDateTime.now(),
-				"Total Errors: " + ex.getErrorCount() + ", First Error: " + ex.getFieldError().getDefaultMessage(),
-				request.getDescription(false));
+				"Total Errors: " + ex.getErrorCount() + ", First Error: " + firstError, request.getDescription(false));
+
 		return new ResponseEntity<>(errorDetail, HttpStatus.BAD_REQUEST);
 	}
+
+
 }

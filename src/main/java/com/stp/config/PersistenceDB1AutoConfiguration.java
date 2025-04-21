@@ -22,8 +22,12 @@ import org.springframework.transaction.PlatformTransactionManager;
 @EnableJpaRepositories(basePackages = "com.stp.dao.db1", entityManagerFactoryRef = "db1EntityManager", transactionManagerRef = "bookTransactionManager")
 public class PersistenceDB1AutoConfiguration {
 
+	private final Environment env;
+
 	@Autowired
-	private Environment env;
+	public PersistenceDB1AutoConfiguration(Environment env) {
+		this.env = env;
+	}
 
 	@Primary
 	@Bean
@@ -48,7 +52,7 @@ public class PersistenceDB1AutoConfiguration {
 		properties.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
 		properties.put("hibernate.format_sql", env.getProperty("hibernate.format_sql"));
 		properties.put("hibernate.spring.jpa.open-in-view", env.getProperty("hibernate.spring.jpa.open-in-view"));
-		
+
 		em.setJpaPropertyMap(properties);
 
 		return em;

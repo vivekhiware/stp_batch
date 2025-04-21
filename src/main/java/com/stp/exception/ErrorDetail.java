@@ -1,6 +1,5 @@
 package com.stp.exception;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class ErrorDetail {

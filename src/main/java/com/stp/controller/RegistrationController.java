@@ -1,5 +1,7 @@
 package com.stp.controller;
 
+import static com.stp.utility.GenericCLass.STATUS_FAILED;
+
 import java.util.Collections;
 import java.util.Optional;
 
@@ -14,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.stp.model.db1.STP_Login;
+import com.stp.model.db1.StpLogin;
 import com.stp.service.RegistrationServ;
 import com.stp.service.impl.EntryFetchService;
 import com.stp.utility.ResponseBean;
@@ -53,55 +55,55 @@ public class RegistrationController {
 
 	@PostMapping(value = "udpateAccess")
 	public ResponseBean updateAccess(@RequestBody String json) {
-		logger.info("Received  Update JSON: " + json); // Log the received JSON
+		logger.info("Received Update JSON: {}", json);
 		if (json == null || json.trim().isEmpty()) {
-			return createErrorResponse("No JSON data provided.", "FAILED");
+			return createErrorResponse("No JSON data provided.", STATUS_FAILED);
 		}
 		try {
 			// Deserialize the JSON string into an STP_Login object
-			STP_Login accObject = objectMapper.readValue(json, STP_Login.class);
+			StpLogin accObject = objectMapper.readValue(json, StpLogin.class);
 			// Process the access detail
-			STP_Login addAccessDetail = registrationServ.updateAccess(accObject);
+			StpLogin addAccessDetail = registrationServ.updateAccess(accObject);
 			if (addAccessDetail != null) {
 				return createSuccessResponse("Access Update successfully.", addAccessDetail);
 			} else {
-				return createErrorResponse("Error Update access ", "FAILED");
+				return createErrorResponse("Error Update access ", STATUS_FAILED);
 			}
 		} catch (JsonProcessingException e) {
 			// Handle invalid JSON format
-			return createErrorResponse("Invalid JSON format: " + e.getOriginalMessage(), "FAILED");
+			return createErrorResponse("Invalid JSON format: " + e.getOriginalMessage(), STATUS_FAILED);
 		} catch (Exception e) {
 			// Log any other unexpected errors and return a generic error response
 			logger.error("Error in api_reg Update mapping", e);
-			return createErrorResponse("Error saving access: " + e.getMessage(), "FAILED");
+			return createErrorResponse("Error saving access: " + e.getMessage(), STATUS_FAILED);
 		}
 
 	}
 
 	@PostMapping(value = "saveAccess")
 	public ResponseBean saveAccess(@RequestBody String json) {
-		logger.info("Received JSON: " + json); // Log the received JSON
+		logger.info("Received Update JSON: {}", json);
 		if (json == null || json.trim().isEmpty()) {
-			return createErrorResponse("No JSON data provided.", "FAILED");
+			return createErrorResponse("No JSON data provided.", STATUS_FAILED);
 		}
 		try {
 			// Deserialize the JSON string into an STP_Login object
-			STP_Login accObject = objectMapper.readValue(json, STP_Login.class);
+			StpLogin accObject = objectMapper.readValue(json, StpLogin.class);
 			// Process the access detail
-			STP_Login fetchAccessList = registrationServ.fetchAccessList(accObject.getEmplycd());
+			StpLogin fetchAccessList = registrationServ.fetchAccessList(accObject.getEmplycd());
 			if (fetchAccessList != null) {
-				return createErrorResponse("Already Registered For Access.", "FAILED");
+				return createErrorResponse("Already Registered For Access.", STATUS_FAILED);
 			} else {
-				STP_Login addAccessDetail = registrationServ.addAccessDetail(accObject);
+				StpLogin addAccessDetail = registrationServ.addAccessDetail(accObject);
 				return createSuccessResponse("Access saved successfully.", addAccessDetail);
 			}
 		} catch (JsonProcessingException e) {
 			// Handle invalid JSON format
-			return createErrorResponse("Invalid JSON format: " + e.getOriginalMessage(), "FAILED");
+			return createErrorResponse("Invalid JSON format: " + e.getOriginalMessage(), STATUS_FAILED);
 		} catch (Exception e) {
 			// Log any other unexpected errors and return a generic error response
 			logger.error("Error in api_reg saveAccess mapping", e);
-			return createErrorResponse("Error saving access: " + e.getMessage(), "FAILED");
+			return createErrorResponse("Error saving access: " + e.getMessage(), STATUS_FAILED);
 		}
 	}
 

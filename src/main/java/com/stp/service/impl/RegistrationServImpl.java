@@ -15,33 +15,35 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.stp.dao.db1.LoginRepository;
 import com.stp.exception.DetailNotFoundException;
-import com.stp.model.db1.STP_Login;
+import com.stp.model.db1.StpLogin;
 import com.stp.service.RegistrationServ;
 
-//@Service
 @Service(value = "userService")
 public class RegistrationServImpl implements RegistrationServ, UserDetailsService {
 
+	private final LoginRepository loginRepository;
+
 	@Autowired
-	private LoginRepository loginRepository;
+	public RegistrationServImpl(LoginRepository loginRepository) {
+		super();
+		this.loginRepository = loginRepository;
+	}
 
-	@Override
-
-	public STP_Login addAccessDetail(STP_Login access) {
+	public StpLogin addAccessDetail(StpLogin access) {
 		// Adds a new access detail record to the database
 		return loginRepository.save(access);
 	}
 
 	@Override
 //	@Cacheable(value = "fetchAccessListCache", key = "#emplycd")
-	public STP_Login fetchAccessList(Integer emplycd) {
+	public StpLogin fetchAccessList(Integer emplycd) {
 		// Fetches the access details for a specific employee code
 		return loginRepository.findByEmplycd(emplycd);
 	}
 
 	@Override
 //	@Cacheable(value = "fetchAccessListAllCache")
-	public List<STP_Login> fetchAccessListAll() {
+	public List<StpLogin> fetchAccessListAll() {
 		// Fetches all access details from the database
 		return loginRepository.findAll();
 	}
@@ -49,8 +51,8 @@ public class RegistrationServImpl implements RegistrationServ, UserDetailsServic
 	@Override
 	@Transactional
 //	@Cacheable(value = "removeAccessDetailCache", key = "#emplycd")
-	public STP_Login removeAccessDetail(Integer emplycd) {
-		STP_Login accessDetail = loginRepository.findByEmplycd(emplycd);
+	public StpLogin removeAccessDetail(Integer emplycd) {
+		StpLogin accessDetail = loginRepository.findByEmplycd(emplycd);
 
 		if (accessDetail == null) {
 			// Throw a custom exception if employee not found
@@ -72,8 +74,8 @@ public class RegistrationServImpl implements RegistrationServ, UserDetailsServic
 
 	@Override
 	@Transactional
-	public STP_Login updateAccess(STP_Login access) {
-		STP_Login accessDetail = loginRepository.findByEmplycd(access.getEmplycd());
+	public StpLogin updateAccess(StpLogin access) {
+		StpLogin accessDetail = loginRepository.findByEmplycd(access.getEmplycd());
 		if (accessDetail == null) {
 			// Throw a custom exception if employee not found
 			throw new DetailNotFoundException("Employee not found for ID: " + access.getEmplycd());
@@ -99,14 +101,12 @@ public class RegistrationServImpl implements RegistrationServ, UserDetailsServic
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		STP_Login user = loginRepository.findByEmplycd(Integer.parseInt(username));
+		StpLogin user = loginRepository.findByEmplycd(Integer.parseInt(username));
 		if (user == null) {
 			throw new UsernameNotFoundException("Invalid username or password.");
 		}
-//		return new org.springframework.security.core.userdetails.User(user.getEmplycd().toString(), user.getPassword(),
-//				getAuthority());
-		return new org.springframework.security.core.userdetails.User(user.getEmplycd().toString(), "PASS",
-				getAuthority());
+		return new org.springframework.security.core.userdetails.User(user.getEmplycd().toString(),
+				user.getCredential(), getAuthority());
 
 	}
 

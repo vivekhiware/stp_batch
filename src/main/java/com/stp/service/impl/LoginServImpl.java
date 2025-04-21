@@ -8,20 +8,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.stp.dao.db1.HistoryRepository;
-import com.stp.model.db1.STP_History;
+import com.stp.model.db1.StpHistory;
 import com.stp.service.LoginServ;
 
 @Service
 public class LoginServImpl implements LoginServ {
 
+	private final HistoryRepository historyRepository;
+
 	@Autowired
-	private HistoryRepository historyRepository;
+	public LoginServImpl(HistoryRepository historyRepository) {
+		this.historyRepository = historyRepository;
+	}
 
 	@Override
 //	@Cacheable(value = "addHistoryCache")
 	public void addHistory(HttpServletRequest request, Integer emplycd) {
 
-		STP_History history = new STP_History();
+		StpHistory history = new StpHistory();
 		history.setEmplycd(emplycd);
 		history.setIntime(new Date());
 		history.setSessionid(request.getSession().getId());
@@ -32,7 +36,6 @@ public class LoginServImpl implements LoginServ {
 	@Override
 //	@Cacheable(value = "checkAlreadyLoginCache", key = "#emplycd ")
 	public boolean checkAlreadyLogin(Integer emplycd) {
-		// TODO Auto-generated method stub
 		return historyRepository.existsByEmplycdAndOuttimeIsNull(emplycd);
 	}
 

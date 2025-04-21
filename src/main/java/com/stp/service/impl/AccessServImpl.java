@@ -12,42 +12,46 @@ import org.springframework.stereotype.Service;
 
 import com.stp.dao.db1.AccessRepository;
 import com.stp.exception.DetailNotFoundException;
-import com.stp.model.db1.STP_Access;
+import com.stp.model.db1.StpAccess;
 import com.stp.service.AccessServ;
 
 @Service
 @Transactional
 public class AccessServImpl implements AccessServ {
 
+	private final AccessRepository accessRepository;
+
 	@Autowired
-	private AccessRepository accessRepository;
+	public AccessServImpl(AccessRepository accessRepository) {
+		this.accessRepository = accessRepository;
+	}
 
 	@Override
 	@Cacheable(value = "fetchAccessListCache")
-	public List<STP_Access> fetchAccessList() {
+	public List<StpAccess> fetchAccessList() {
 		// Fetches all active access records
 		return accessRepository.findByStatus("A");
 	}
 
 	@Override
 	@Cacheable(value = "fetchAccessListAllCache")
-	public List<STP_Access> fetchAccessListAll() {
+	public List<StpAccess> fetchAccessListAll() {
 		// Fetches all access records, regardless of status
 		return accessRepository.findAll();
 	}
 
 	@Override
 	@Cacheable(value = "addAccessCache")
-	public STP_Access addAccessDetail(STP_Access access) {
+	public StpAccess addAccessDetail(StpAccess access) {
 		// Adds a new access detail record
 		return accessRepository.save(access);
 	}
 
 	@Override
 	@Cacheable(value = "removeAccessLCache")
-	public STP_Access removeAccessDetail(String appname) {
+	public StpAccess removeAccessDetail(String appname) {
 		// Retrieves the access detail by appname and marks it as inactive if found
-		STP_Access accessDetail = accessRepository.findByAppname(appname);
+		StpAccess accessDetail = accessRepository.findByAppname(appname);
 		if (accessDetail != null) {
 			accessDetail.setStatus("N");
 			accessDetail.setRemovedate(Date.from(Instant.now()));

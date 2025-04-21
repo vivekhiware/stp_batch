@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Module to Table Mapping</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: Arial, sans-serif;
+    }
+    th, td {
+      border: 1px solid #999;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Module Name to Table Name Mapping</h2>
+<table border="1" cellpadding="5" cellspacing="0">
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>Module Name</th>
+      <th>Table Name in MySQL</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td>StpCardsMasterCardDomIssSurchargeCredit</td><td>stp_cards_mc_dom_iss_cr_surch</td></tr>
+    <tr><td>2</td><td>StpCardsMasterCardDomIssSurchargeDebit</td><td>stp_cards_mc_dom_iss_dr_surch</td></tr>
+    <tr><td>3</td><td>StpCardsMasterCardInternationSettlement</td><td>stp_cards_mc_int_settlement_ttum</td></tr>
+    <tr><td>4</td><td>StpCardsMasterCardPosIssDropTtum</td><td>stp_cards_mc_iss_pos_drop_ttum</td></tr>
+    <tr><td>5</td><td>StpCardsMasterCardPosIssLatePresentmentTtum</td><td>stp_cards_mc_pos_iss_latepres_ttum</td></tr>
+    <tr><td>6</td><td>StpCardsMasterCardPosProactiveTtum</td><td>stp_cards_mc_pos_proactive_ttum</td></tr>
+    <tr><td>7</td><td>StpCardsMasterCardSettlement</td><td>stp_cards_mc_settlement_ttum</td></tr>
+    <tr><td>8</td><td>StpCardsNfsAcqCreditReconTtum</td><td>stp_cards_nfs_acq_recon_cr_ttum</td></tr>
+    <tr><td>9</td><td>StpCardsNfsAcqDebitReconTtum</td><td>stp_cards_nfs_acq_recon_dr_ttum</td></tr>
+    <tr><td>10</td><td>StpCardsNfsIssReconTtumDrop</td><td>stp_cards_nfs_iss_recon_drop_ttum</td></tr>
+    <tr><td>11</td><td>StpCardsNfsIssReconTtumLateReversal</td><td>stp_cards_nfs_iss_recon_late_rvsrl_ttum</td></tr>
+    <tr><td>12</td><td>StpCardsNfsIssReconTtumProactive</td><td>stp_cards_nfs_iss_recon_proactive_ttum</td></tr>
+    <tr><td>13</td><td>StpCardsRupayDeclineTtum</td><td>stp_cards_rupay_decl_ttum</td></tr>
+    <tr><td>14</td><td>StpCardsRupayDomAdjustmentTtum</td><td>stp_cards_rupay_dom_adjustment_ttum</td></tr>
+    <tr><td>15</td><td>StpCardsRupayDomLatePresentment</td><td>stp_cards_rupay_dom_latepresentment</td></tr>
+    <tr><td>16</td><td>StpCardsRupayDomSurchargeCredit</td><td>stp_cards_rupay_dom_surcharge_credit</td></tr>
+    <tr><td>17</td><td>StpCardsRupayDomSurchargeDebit</td><td>stp_cards_rupay_dom_surcharge_debit</td></tr>
+    <tr><td>18</td><td>StpCardsRupayIntAdjustmentTtum</td><td>stp_cards_rupay_int_adjustment_ttum</td></tr>
+    <tr><td>19</td><td>StpCardsRupayIntDeclineTtum</td><td>stp_cards_rupay_int_decl_ttum</td></tr>
+    <tr><td>20</td><td>StpCardsRupayIntDropTtum</td><td>stp_cards_rupay_int_drop_ttum</td></tr>
+    <tr><td>21</td><td>StpCardsRupayIntLatepresentmentTtum</td><td>stp_cards_rupay_int_latepresentment</td></tr>
+    <tr><td>22</td><td>StpCardsRupayIntOfflinePresentmentTtum</td><td>stp_cards_rupay_int_ofline_pres_ttum</td></tr>
+    <tr><td>23</td><td>StpCardsRupayIntPosSettlementTtum</td><td>stp_cards_rupay_int_pos_sttl_ttum</td></tr>
+    <tr><td>24</td><td>StpCardsRupayIntProactiveTtum</td><td>stp_cards_rupay_int_proactiv_ttum</td></tr>
+    <tr><td>25</td><td>StpCardsRupayIntSurchargeCredit</td><td>stp_cards_rupay_int_cr_surch_ttum</td></tr>
+    <tr><td>26</td><td>StpCardsRupayIntSurchargeDebit</td><td>stp_cards_rupay_int_dr_surch_ttum</td></tr>
+    <tr><td>27</td><td>StpCardsRupayPosDomSettlement</td><td>stp_cards_rupay_pos_dom_settlement</td></tr>
+    <tr><td>28</td><td>StpCardsRupayProactivTtum</td><td>stp_cards_rupay_proactiv_ttum</td></tr>
+    <tr><td>29</td><td>StpCardsVisaIssDomSettlementTtum</td><td>stp_cards_visa_dom_iss_settlement_report</td></tr>
+    <tr><td>30</td><td>StpCardsVisaIssDropTtum</td><td>stp_cards_visa_iss_drop_ttum</td></tr>
+    <tr><td>31</td><td>StpCardsVisaIssLatePresentmentTtum</td><td>stp_cards_visa_iss_late_presentment_ttum</td></tr>
+    <tr><td>32</td><td>StpCardsVisaIssOrgWdlTtum</td><td>stp_cards_visa_iss_org_wdl_ttum</td></tr>
+    <tr><td>33</td><td>StpCardsVisaIssProactiveTtum</td><td>stp_cards_visa_iss_proactive_ttum</td></tr>
+    <tr><td>34</td><td>StpCardsVisaIssSurchargeCredit</td><td>stp_cards_visa_iss_cr_surch_ttum</td></tr>
+    <tr><td>35</td><td>StpCardsVisaIssSurchargeDebit</td><td>stp_cards_visa_iss_dr_surch_ttum</td></tr>
+    <tr><td>36</td><td>StpImpsChargebackReport</td><td>stp_imps_chargeback_report</td></tr>
+    <tr><td>37</td><td>StpImpsCustomerComp</td><td>stp_imps_customer_comp</td></tr>
+    <tr><td>38</td><td>StpImpsNetworkDeclineIw</td><td>stp_imps_network_decline_iw</td></tr>
+    <tr><td>39</td><td>StpImpsNetworkDeclineOw</td><td>stp_imps_network_decline_ow</td></tr>
+    <tr><td>40</td><td>StpImpsNoncbsIw</td><td>stp_imps_noncbs_iw</td></tr>
+    <tr><td>41</td><td>StpImpsNoncbsOw</td><td>stp_imps_noncbs_ow</td></tr>
+    <tr><td>42</td><td>StpImpsNonNpciIw</td><td>stp_imps_nonnpci_iw</td></tr>
+    <tr><td>43</td><td>StpImpsNonNpciOw</td><td>stp_imps_nonnpci_ow</td></tr>
+    <tr><td>44</td><td>StpImpsNtslNetSetTtum</td><td>stp_imps_ntsl_netset_ttum</td></tr>
+    <tr><td>45</td><td>StpImpsPrearbitrationReport</td><td>stp_imps_prearbitration_report</td></tr>
+    <tr><td>46</td><td>StpImpsRccReport</td><td>stp_imps_rcc_report</td></tr>
+    <tr><td>47</td><td>StpImpsRccRepraiseReport</td><td>stp_imps_rcc_repraise_report</td></tr>
+    <tr><td>48</td><td>StpImpsTccDataIw</td><td>stp_imps_tcc_data_iw</td></tr>
+    <tr><td>49</td><td>StpImpsTccDataIwRet</td><td>stp_imps_tcc_data_iw_ret</td></tr>
+    <tr><td>50</td><td>StpUpiAdjustmentReport</td><td>stp_upi_adjustment_report</td></tr>
+    <tr><td>51</td><td>StpUpiDrcNpci</td><td>stp_upi_drc_npci</td></tr>
+    <tr><td>52</td><td>StpUpiMultiReversal</td><td>stp_upi_multireversal</td></tr>
+    <tr><td>53</td><td>StpUpiNonCbsIw</td><td>stp_upi_noncbs_iw</td></tr>
+    <tr><td>54</td><td>StpUpiNonCbsOw</td><td>stp_upi_noncbs_ow</td></tr>
+    <tr><td>55</td><td>StpUpiNtlsNetSetTtum</td><td>stp_upi_ntsl_netset_ttum</td></tr>
+    <tr><td>56</td><td>StpUpiRetData</td><td>stp_upi_ret_data</td></tr>
+    <tr><td>57</td><td>StpUpiTccData</td><td>stp_upi_tcc_data</td></tr>
+  </tbody>
+</table>
+
+</body>
+</html>

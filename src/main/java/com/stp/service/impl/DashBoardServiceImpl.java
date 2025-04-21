@@ -1,6 +1,10 @@
 package com.stp.service.impl;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -19,34 +23,33 @@ public class DashBoardServiceImpl implements DashBoardService {
 	private EntityManager entityManager;
 
 	@Override
-	public List<Object[]> getDashBoard() {
-		StringBuilder str = new StringBuilder();
-		str.append(
-				"select 'STP_IMPS_NONCBS_IW' name  , count(case when  status=\"L1\"  then 1 end )as L1,count(case when  status=\"L2\"  then 1 end )as L2,count(case when  status=\"L3\"  then 1 end )as L3, count(case when  status=\"L4\"  then 1 end )as L4 ,count(case when  status=\"L5\"  then 1 end )as L5,count(case when  status=\"L6\"  then 1 end )as L6 ,count(case when  status=\"L7\"  then 1 end )as L7, count(case when  status=\"L10\"  then 1 end )as L10 ,count(case when  status=\"R1\"  then 1 end )as R1,count(case when  status=\"R2\"  then 1 end )as R2 from  stp_imps_noncbs_iw ");
-		str.append("  union all ");
-		str.append(
-				"select 'STP_IMPS_NONNPCI_IW' name  , count(case when  status=\"L1\"  then 1 end )as L1,count(case when  status=\"L2\"  then 1 end )as L2,count(case when  status=\"L3\"  then 1 end )as L3, count(case when  status=\"L4\"  then 1 end )as L4 ,count(case when  status=\"L5\"  then 1 end )as L5,count(case when  status=\"L6\"  then 1 end )as L6 ,count(case when  status=\"L7\"  then 1 end )as L7,  count(case when  status=\"L10\"  then 1 end )as L10 ,count(case when  status=\"R1\"  then 1 end )as R1,count(case when  status=\"R2\"  then 1 end )as R2 from  stp_imps_nonnpci_iw ");
-		str.append("  union all ");
-		str.append(
-				"select 'STP_IMPS_NONNPCI_OW' name  , count(case when  status=\"L1\"  then 1 end )as L1,count(case when  status=\"L2\"  then 1 end )as L2,count(case when  status=\"L3\"  then 1 end )as L3, count(case when  status=\"L4\"  then 1 end )as L4 ,count(case when  status=\"L5\"  then 1 end )as L5,count(case when  status=\"L6\"  then 1 end )as L6 ,count(case when  status=\"L7\"  then 1 end )as L7,  count(case when  status=\"L10\"  then 1 end )as L10 ,count(case when  status=\"R1\"  then 1 end )as R1,count(case when  status=\"R2\"  then 1 end )as R2 from  stp_imps_nonnpci_ow ");
-		str.append("  union all ");
-		str.append(
-				"select 'STP_IMPS_TCC_DATA_IW' name  , count(case when  status=\"L1\"  then 1 end )as L1,count(case when  status=\"L2\"  then 1 end )as L2,count(case when  status=\"L3\"  then 1 end )as L3, count(case when  status=\"L4\"  then 1 end )as L4 ,count(case when  status=\"L5\"  then 1 end )as L5,count(case when  status=\"L6\"  then 1 end )as L6 ,count(case when  status=\"L7\"  then 1 end )as L7,  count(case when  status=\"L10\"  then 1 end )as L10 ,count(case when  status=\"R1\"  then 1 end )as R1,count(case when  status=\"R2\"  then 1 end )as R2 from  stp_imps_tcc_data_iw ");
-		str.append("  union all ");
-		str.append(
-				"select 'STP_IMPS_IW_NETWORK_DECLINE' name  , count(case when  status=\"L1\"  then 1 end )as L1,count(case when  status=\"L2\"  then 1 end )as L2,count(case when  status=\"L3\"  then 1 end )as L3, count(case when  status=\"L4\"  then 1 end )as L4 ,count(case when  status=\"L5\"  then 1 end )as L5,count(case when  status=\"L6\"  then 1 end )as L6 ,count(case when  status=\"L7\"  then 1 end )as L7,  count(case when  status=\"L10\"  then 1 end )as L10 ,count(case when  status=\"R1\"  then 1 end )as R1,count(case when  status=\"R2\"  then 1 end )as R2 from  stp_imps_iw_network_decline ");
-		str.append("  union all ");
-		str.append(
-				"select 'STP_IMPS_OW_NETWORK_DECLINE' name  , count(case when  status=\"L1\"  then 1 end )as L1,count(case when  status=\"L2\"  then 1 end )as L2,count(case when  status=\"L3\"  then 1 end )as L3, count(case when  status=\"L4\"  then 1 end )as L4 ,count(case when  status=\"L5\"  then 1 end )as L5,count(case when  status=\"L6\"  then 1 end )as L6 ,count(case when  status=\"L7\"  then 1 end )as L7,  count(case when  status=\"L10\"  then 1 end )as L10 ,count(case when  status=\"R1\"  then 1 end )as R1,count(case when  status=\"R2\"  then 1 end )as R2 from  stp_imps_ow_network_decline ");
-		str.append("  union all ");
-		str.append(
-				"select 'STP_IMPS_NONCBS_OW' name  , count(case when  status=\"L1\"  then 1 end )as L1,count(case when  status=\"L2\"  then 1 end )as L2,count(case when  status=\"L3\"  then 1 end )as L3, count(case when  status=\"L4\"  then 1 end )as L4 ,count(case when  status=\"L5\"  then 1 end )as L5,count(case when  status=\"L6\"  then 1 end )as L6 , count(case when  status=\"L7\"  then 1 end )as L7, count(case when  status=\"L10\"  then 1 end )as L10 ,count(case when  status=\"R1\"  then 1 end )as R1,count(case when  status=\"R2\"  then 1 end )as R2 from  stp_imps_noncbs_ow ");
-		str.append("  union all ");
-		str.append(
-				"select 'STP_IMPS_NTSL_NETSET_TTUM' name  , count(case when  status=\"L1\"  then 1 end )as L1,count(case when  status=\"L2\"  then 1 end )as L2,count(case when  status=\"L3\"  then 1 end )as L3, count(case when  status=\"L4\"  then 1 end )as L4 ,count(case when  status=\"L5\"  then 1 end )as L5,count(case when  status=\"L6\"  then 1 end )as L6 ,count(case when  status=\"L7\"  then 1 end )as L7,  count(case when  status=\"L10\"  then 1 end )as L10 ,count(case when  status=\"R1\"  then 1 end )as R1,count(case when  status=\"R2\"  then 1 end )as R2 from  stp_imps_ntsl_netset_ttum ");
+	public List<Object[]> getDashBoardDynamic(String type) {
+		Map<String, String[]> tableMap = new HashMap<>();
+		tableMap.put("IMPS",
+				new String[] { "stp_imps_noncbs_iw", "stp_imps_noncbs_ow", "stp_imps_nonnpci_iw", "stp_imps_nonnpci_ow",
+						"stp_imps_ntsl_netset_ttum", "stp_imps_prearbitration_report", "stp_imps_rcc_report",
+						"stp_imps_rcc_repraise_report", "stp_imps_tcc_data_iw", "stp_imps_tcc_data_iw_ret" });
+		tableMap.put("UPI", new String[] { "stp_upi_tcc_data", "stp_upi_ret_data" });
+		tableMap.put("CARDS", new String[] { "stp_cards_mc_dom_iss_cr_surch", "stp_cards_mc_dom_iss_dr_surch" });
+		tableMap.put("ATMCIA", new String[] { "stp_cards_mc_settlement_int_ttum", "stp_cards_mc_iss_pos_drop_ttum" });
 
-		Query nativeQuery = entityManager.createNativeQuery(str.toString());
-		return nativeQuery.getResultList();
+		String[] statuses = { "L1", "L2", "L3", "L4", "L5", "L6", "L7", "L10", "R1", "R2" };
+
+		String[] tables = tableMap.get(type.toUpperCase());
+		if (tables == null) {
+			throw new IllegalArgumentException("Unsupported type: " + type);
+		}
+
+		String statusColumns = Arrays.stream(statuses)
+				.map(status -> String.format("count(case when status='%s' then 1 end) as %s", status, status))
+				.collect(Collectors.joining(", "));
+
+		String queryStr = Arrays.stream(tables)
+				.map(table -> String.format("select '%s' as name, %s from %s", table, statusColumns, table))
+				.collect(Collectors.joining(" union all "));
+
+		Query query = entityManager.createNativeQuery(queryStr);
+		return query.getResultList();
 	}
 
 }

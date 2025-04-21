@@ -21,8 +21,12 @@ import org.springframework.transaction.PlatformTransactionManager;
 @EnableJpaRepositories(basePackages = "com.stp.dao.db2", entityManagerFactoryRef = "db2EntityManager", transactionManagerRef = "authorTransactionManager")
 public class PersistenceDB2AutoConfiguration {
 
+	private final Environment env;
+
 	@Autowired
-	private Environment env;
+	public PersistenceDB2AutoConfiguration(Environment env) {
+		this.env = env;
+	}
 
 	@Bean
 	@ConfigurationProperties(prefix = "spring.db2-datasource")

@@ -6,9 +6,9 @@ public interface IsoMessage
 {
 	public void setMsgId(MsgId msgId);
 	public MsgId getMsgId();
-	public void addFields(int index, String value)  throws Exception;
+	public void addFields(int index, String value) ;
 	public IsoField getFieldbyNumber(int no);
-	public List<Integer> getValuesIndexInBitMap()  throws Exception;
-	public byte[] generateMessage() throws Exception;
-	public void printMessage(String stan) throws Exception;
+	public List<Integer> getValuesIndexInBitMap();
+	public byte[] generateMessage();
+	public void printMessage(String stan) ;
 }
